@@ -7,6 +7,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { searchDestinations, getVisitationByMonth, getCommunityPopularity } from './nsData.js';
 import { getWeatherOutlook } from './weather.js';
 import { buildItinerary } from './itinerary.js';
+import { parseTripFromMessages } from './parse.js';
 
 const MODEL = 'claude-opus-4-8';
 
@@ -188,18 +189,31 @@ export async function chat(messages) {
 
 /**
  * Rule-based fallback used when no Anthropic API key is configured.
- * Builds the same full itinerary and returns a short summary + link.
+ * Understands free-text chat (via parseTripFromMessages) AND the form's
+ * structured meta, then builds the same full itinerary + link.
+ *
+ * @param {object} meta      optional { destination, start_date, end_date } from the form
+ * @param {Array}  messages  the chat history [{role, content}, ...]
  */
-export async function fallbackRecommend({ destination, start_date, end_date }) {
-  if (!destination || !start_date || !end_date) {
-    return 'Tell me a destination and your travel dates (you can use the "Plan a trip" form above), and I\'ll build your full itinerary. _(Tip: add an ANTHROPIC_API_KEY to `.env` for the full conversational agent.)_';
+export async function fallbackRecommend(meta = {}, messages = []) {
+  const { destination, start_date, end_date } = parseTripFromMessages(messages, meta);
+
+  // Ask only for what's still missing — like a real agent would.
+  if (!destination && !start_date) {
+    return 'Sure! Tell me **where** in Nova Scotia you\'d like to go and **roughly when** — e.g. _"Peggy\'s Cove on June 20"_ or _"Cape Breton, Aug 10–15"_.';
+  }
+  if (!destination) {
+    return 'Got your dates! 📅 Which place in Nova Scotia would you like to visit? (e.g. **Peggy\'s Cove**, **Lunenburg**, or **Cape Breton**)';
+  }
+  if (!start_date) {
+    return `Great — **${escapeName(destination)}** it is! 🗺️ What dates are you thinking? (e.g. _"June 20"_ or _"Aug 10–15"_)`;
   }
 
   let it;
   try {
     it = await buildItinerary({ destination, start_date, end_date });
   } catch (err) {
-    return `I couldn't find a match for **${destination}**. ${err.message} Try a nearby community or a region name like "Cape Breton" or "Halifax".`;
+    return `I couldn't find **${escapeName(destination)}** in the Nova Scotia tourism data. Try a nearby community or a region name like **Cape Breton**, **Halifax** or **Lunenburg**. _(${err.message})_`;
   }
 
   const lines = [`## Your Nova Scotia trip: ${escapeName(it.destination)}`];

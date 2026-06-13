@@ -109,7 +109,7 @@ app.post('/api/chat', writeLimiter, async (req, res) => {
         // Live Claude failed (e.g. no credits / rate limit). Don't lose the
         // request — fall back to the data-driven itinerary builder.
         console.error('Claude API failed, falling back:', apiErr.status, apiErr.message);
-        const reply = await fallbackRecommend(safeMeta);
+        const reply = await fallbackRecommend(safeMeta, messages);
         const lowCredit = apiErr.status === 400 && /credit balance/i.test(apiErr.message || '');
         const note = lowCredit
           ? '> ⚠️ _The AI agent is set up, but your Anthropic account is out of credits — add some at console.anthropic.com → Plans & Billing. Until then, here is a data-built itinerary:_\n\n'
@@ -117,7 +117,7 @@ app.post('/api/chat', writeLimiter, async (req, res) => {
         return res.json({ reply: note + reply, ai: false, fallback: true });
       }
     }
-    const reply = await fallbackRecommend(safeMeta);
+    const reply = await fallbackRecommend(safeMeta, messages);
     res.json({ reply, ai: false });
   } catch (err) {
     console.error('chat error:', err);
