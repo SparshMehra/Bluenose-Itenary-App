@@ -1,2 +1,18 @@
-node_modules/
+# Secrets — NEVER commit these
 .env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Generated itineraries (user data)
+data/
+
+# Logs / OS / editor cruft
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
