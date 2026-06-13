@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nova Scotia Explorer — Canada's Ocean Playground</title>
+  <meta name="description" content="Discover Nova Scotia's best tourist spots, weather and travel seasons — powered by Open Data Nova Scotia and an AI travel agent." />
+  <meta name="theme-color" content="#0a1626" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Outfit:wght@300..800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============ NAVBAR ============ -->
+  <nav class="nav" id="nav">
+    <a class="brand" href="#home">
+      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a2 2 0 0 1 2 2 2 2 0 0 1-1 1.73V7h3v2h-3v8.6c2.5-.4 4.6-1.7 5.6-3.6l1.8.9C18.9 17.8 15.7 19.7 12 19.7S5.1 17.8 3.6 14.9l1.8-.9c1 1.9 3.1 3.2 5.6 3.6V9H8V7h3V5.73A2 2 0 0 1 10 4a2 2 0 0 1 2-2Z" fill="currentColor"/></svg>
+      <span class="brand-text">Nova&nbsp;Scotia <em>Explorer</em></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="#destinations">Destinations</a>
+      <a href="#regions">Regions</a>
+      <a href="#when-to-go">When to Go</a>
+      <a href="#plan">Plan a Trip</a>
+      <button class="nav-cta" id="navChatBtn">
+        <span class="pulse-dot"></span> Ask the AI agent
+      </button>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="home">
+    <div class="hero-sky" aria-hidden="true">
+      <span class="star s1"></span><span class="star s2"></span><span class="star s3"></span>
+      <span class="star s4"></span><span class="star s5"></span><span class="star s6"></span>
+      <span class="star s7"></span><span class="star s8"></span><span class="star s9"></span>
+    </div>
+
+    <div class="hero-scene" aria-hidden="true">
+      <div class="beam"></div>
+      <svg class="lighthouse" viewBox="0 0 200 260" aria-hidden="true">
+        <!-- headland -->
+        <path d="M0 260 L0 238 Q60 222 110 230 Q160 238 200 226 L200 260 Z" fill="#071120"/>
+        <!-- tower -->
+        <g fill="#0d1f33">
+          <path d="M86 232 L92 130 L108 130 L114 232 Z"/>
+          <rect x="90" y="118" width="20" height="14" rx="2"/>
+          <rect x="93" y="104" width="14" height="14" rx="1"/>
+          <path d="M91 104 L100 92 L109 104 Z"/>
+        </g>
+        <!-- lamp -->
+        <circle class="lamp" cx="100" cy="110" r="5"/>
+      </svg>
+    </div>
+
+    <div class="hero-inner">
+      <p class="hero-kicker reveal">· Canada's Ocean Playground ·</p>
+      <h1 class="reveal d1">Where the tide writes<br /><em>your itinerary.</em></h1>
+      <p class="hero-sub reveal d2">
+        <strong id="heroCount">2,683</strong> real attractions, tours &amp; stays from Nova Scotia's open data —
+        matched to your dates, the weather, and the season by an AI travel agent.
+      </p>
+      <div class="hero-actions reveal d3">
+        <a class="btn btn-amber" href="#destinations">Explore destinations</a>
+        <button class="btn btn-ghost" id="heroChatBtn">💬 Plan with the AI agent</button>
+      </div>
+      <div class="hero-scroll reveal d4"><span></span></div>
+    </div>
+
+    <div class="waves" aria-hidden="true">
+      <svg class="wave w1" viewBox="0 0 2880 120" preserveAspectRatio="none"><path d="M0,64 C320,110 640,18 960,55 C1280,92 1600,30 1920,60 C2240,90 2560,25 2880,64 L2880,120 L0,120 Z" fill="rgba(74,163,216,0.18)"/></svg>
+      <svg class="wave w2" viewBox="0 0 2880 120" preserveAspectRatio="none"><path d="M0,70 C360,30 720,105 1080,68 C1440,30 1800,100 2160,66 C2520,32 2740,90 2880,70 L2880,120 L0,120 Z" fill="rgba(47,127,184,0.30)"/></svg>
+      <svg class="wave w3" viewBox="0 0 2880 120" preserveAspectRatio="none"><path d="M0,80 C320,50 640,108 960,82 C1280,56 1600,108 1920,84 C2240,60 2560,104 2880,80 L2880,120 L0,120 Z" fill="#f6f2ea"/></svg>
+    </div>
+  </header>
+
+  <!-- ============ LIVE STATS STRIP ============ -->
+  <section class="stats-strip" id="statsStrip">
+    <div class="stat reveal"><span class="stat-num" id="statOperators" data-countup>—</span><span class="stat-label">listed tourism spots</span></div>
+    <div class="stat reveal d1"><span class="stat-num" id="statRegions" data-countup>—</span><span class="stat-label">tourism regions</span></div>
+    <div class="stat reveal d2"><span class="stat-num" id="statBusiest">—</span><span class="stat-label">busiest month</span></div>
+    <div class="stat reveal d3"><span class="stat-num" id="statTopSpot">—</span><span class="stat-label">most-visited community</span></div>
+  </section>
+
+  <main>
+    <!-- ============ DESTINATIONS ============ -->
+    <section class="section" id="destinations">
+      <p class="kicker reveal">The directory</p>
+      <h2 class="reveal">Explore <em>destinations</em></h2>
+      <p class="section-sub reveal">Every spot below is a real operator listed on Open Data Nova Scotia — nothing invented.</p>
+
+      <div class="filters reveal">
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2a8 8 0 1 0 4.9 14.3l5.4 5.4 1.4-1.4-5.4-5.4A8 8 0 0 0 10 2Zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z" fill="currentColor"/></svg>
+          <input id="filterSearch" type="search" placeholder="Search lighthouses, wineries, trails…" />
+        </div>
+        <select id="filterRegion" aria-label="Region"><option value="">All regions</option></select>
+        <select id="filterType" aria-label="Type"><option value="">All types</option></select>
+      </div>
+
+      <div class="dest-grid" id="destGrid"></div>
+      <div class="center"><button class="btn btn-sea" id="loadMoreBtn" hidden>Load more spots ↓</button></div>
+    </section>
+
+    <!-- ============ REGIONS ============ -->
+    <section class="section-band" id="regions">
+      <div class="band-inner">
+        <p class="kicker light reveal">Seven shores</p>
+        <h2 class="light reveal">Pick your <em>region</em></h2>
+        <p class="section-sub light reveal">Ranked by listed spots, with each region's most-visited communities from the provincial exit survey.</p>
+        <div class="region-grid" id="regionGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ WHEN TO GO ============ -->
+    <section class="section" id="when-to-go">
+      <p class="kicker reveal">Seasonality, from real counts</p>
+      <h2 class="reveal">When to <em>go</em></h2>
+      <p class="section-sub reveal">Average monthly visitors to Nova Scotia — hover the bars. Source: provincial visitation dataset.</p>
+      <div class="chart-card reveal">
+        <canvas id="seasonChart" height="300"></canvas>
+        <div class="legend">
+          <span><i class="dot dot-peak"></i> Peak — lively &amp; busy, book early</span>
+          <span><i class="dot dot-shoulder"></i> Shoulder — quieter, great value</span>
+          <span><i class="dot dot-low"></i> Off season — many spots closed</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PLAN A TRIP ============ -->
+    <section class="section-band plan-band" id="plan">
+      <div class="band-inner">
+        <p class="kicker light reveal">Your turn</p>
+        <h2 class="light reveal">Plan a <em>trip</em></h2>
+        <p class="section-sub light reveal">Tell us where and when. The agent checks real spots, your weather window, and whether the season suits you.</p>
+
+        <form class="ticket reveal" id="tripForm">
+          <div class="ticket-main">
+            <label>
+              <span class="lbl">Destination</span>
+              <input id="destination" type="text" list="destSuggestions" placeholder="Peggys Cove · Cabot Trail · Halifax…" autocomplete="off" required />
+              <datalist id="destSuggestions"></datalist>
+            </label>
+            <div class="ticket-dates">
+              <label>
+                <span class="lbl">Departing</span>
+                <input id="startDate" type="date" required />
+              </label>
+              <label>
+                <span class="lbl">Returning</span>
+                <input id="endDate" type="date" required />
+              </label>
+            </div>
+          </div>
+          <div class="ticket-stub">
+            <div class="stub-art">⚓</div>
+            <button type="submit" class="btn btn-amber btn-block" id="planBtn">Plan my trip</button>
+            <p class="stub-note">boarding the AI agent…</p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <p class="footer-brand">⚓ Nova Scotia <em>Explorer</em></p>
+        <p class="footer-tag">An open-data travel guide.<br/>Not affiliated with the Province of Nova Scotia.</p>
+      </div>
+      <div>
+        <p class="footer-h">Data</p>
+        <a href="https://data.novascotia.ca" target="_blank" rel="noopener">Open Data Nova Scotia</a>
+        <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo weather</a>
+      </div>
+      <div>
+        <p class="footer-h">Sections</p>
+        <a href="#destinations">Destinations</a>
+        <a href="#regions">Regions</a>
+        <a href="#when-to-go">When to go</a>
+      </div>
+    </div>
+    <p class="footer-line">Built with real provincial data · <span id="footerYear"></span></p>
+  </footer>
+
+  <!-- ============ AI CHAT WIDGET ============ -->
+  <button class="chat-fab" id="chatFab" aria-label="Open AI travel agent">
+    <span class="fab-ring"></span>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C7 3 3 6.6 3 11c0 2.2 1 4.1 2.7 5.5-.2 1-.7 2.1-1.6 3.2-.2.2 0 .6.3.6 1.9-.1 3.5-.8 4.6-1.5 1 .2 2 .4 3 .4 5 0 9-3.6 9-8.2S17 3 12 3Z" fill="currentColor"/></svg>
+  </button>
+
+  <div class="chat-widget" id="chatWidget" hidden>
+    <div class="chat-header">
+      <div class="chat-id">
+        <div class="chat-avatar">⚓</div>
+        <div>
+          <strong>Bluenose</strong>
+          <span class="chat-sub">AI travel agent <span id="aiBadge" class="chat-badge">…</span></span>
+        </div>
+      </div>
+      <button class="chat-close" id="chatClose" aria-label="Close chat">✕</button>
+    </div>
+    <div class="chat-messages" id="messages">
+      <div class="msg agent"><div class="bubble">
+        Hi! I'm <strong>Bluenose</strong> 🌊 — tell me <strong>where</strong> you'd like to go in Nova Scotia and
+        <strong>your dates</strong>, and I'll find the best spots, your weather window, and whether the season suits you.
+      </div></div>
+      <div class="chips" id="chatChips">
+        <button type="button" data-chip="What are the best spots around Peggys Cove next weekend?">Peggys Cove next weekend</button>
+        <button type="button" data-chip="I want to drive the Cabot Trail in Cape Breton this August — best spots, weather and dates?">Cabot Trail in August</button>
+        <button type="button" data-chip="When is Nova Scotia quietest but still good weather?">Quietest good-weather month?</button>
+      </div>
+    </div>
+    <div class="typing" id="typing" hidden><span></span><span></span><span></span></div>
+    <form class="chat-input" id="chatForm">
+      <input id="chatInput" type="text" placeholder="e.g. Lunenburg, Sep 10–14" autocomplete="off" />
+      <button type="submit" aria-label="Send">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 21 3l-8.5 18-2.6-7L3 11.5Z" fill="currentColor"/></svg>
+      </button>
+    </form>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

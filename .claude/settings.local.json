@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:api.us.socrata.com)",
+      "PowerShell($ids = @\\('2h2s-6bg4','n783-4gmh','is4a-t3qd','xqm5-iybw'\\); foreach \\($id in $ids\\) { Write-Output \"=== $id ===\"; try { $r = Invoke-RestMethod -Uri \"https://data.novascotia.ca/resource/$id.json?`$limit=2\" -TimeoutSec 30; $r | ConvertTo-Json -Depth 4 } catch { Write-Output \"ERROR: $\\($_.Exception.Message\\)\" } })",
+      "Skill(claude-api)",
+      "Skill(claude-api:*)",
+      "PowerShell(node --version)",
+      "PowerShell(npm --version)",
+      "mcp__Claude_Preview__preview_start",
+      "PowerShell(gh auth status)"
+    ]
+  }
+}

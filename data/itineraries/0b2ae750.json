@@ -1,0 +1,570 @@
+{
+  "id": "0b2ae750",
+  "created_at": "2026-06-13T20:26:44.481Z",
+  "destination": "Lunenburg",
+  "region": "South Shore",
+  "start_date": "2026-08-12",
+  "end_date": "2026-08-15",
+  "notes": "",
+  "anchor": {
+    "name": "Lunenburg Arms Hotel & Spa",
+    "latitude": 44.376911,
+    "longitude": -64.310587
+  },
+  "popularity": {
+    "community": "Lunenburg",
+    "region": "South Shore Region",
+    "percent_of_visitors": 17.3,
+    "survey_year": 2022
+  },
+  "weather_mode": "historical_average",
+  "weather_note": "Trip is beyond the 16-day forecast window. Showing typical conditions for these dates, averaged from the last 2 years.",
+  "days": [
+    {
+      "date": "2026-08-12",
+      "weather": {
+        "summary": "Overcast / Light drizzle",
+        "tmax": 25.9,
+        "tmin": 17.1,
+        "precip_mm": 0.1,
+        "chance_pct": null,
+        "historical": true
+      },
+      "morning": {
+        "name": "Lunenburg Academy National Historic Site",
+        "type": "Attraction",
+        "region": "South Shore",
+        "latitude": 44.380108,
+        "longitude": -64.315918,
+        "distance_km": 0.6,
+        "maps_url": "https://www.google.com/maps/search/?api=1&query=44.380108,-64.315918",
+        "reviews_url": "https://www.google.com/search?q=Lunenburg%20Academy%20National%20Historic%20Site%20South%20Shore%20Nova%20Scotia%20reviews"
+      },
+      "afternoon": {
+        "name": "Bluenose II",
+        "type": "Outdoor Activities and Tours",
+        "region": "South Shore",
+        "latitude": 44.37615,
+        "longitude": -64.31163,
+        "distance_km": 0.1,
+        "maps_url": "https://www.google.com/maps/search/?api=1&query=44.37615,-64.31163",
+        "reviews_url": "https://www.google.com/search?q=Bluenose%20II%20South%20Shore%20Nova%20Scotia%20reviews"
+      },
+      "dinner": {
+        "name": "Beach Pea Kitchen & Bar",
+        "type": "Eat & Drink",
+        "region": "South Shore",
+        "latitude": 44.376268,
+        "longitude": -64.30927,
+        "distance_km": 0.1,
+        "maps_url": "https://www.google.com/maps/search/?api=1&query=44.376268,-64.30927",
+        "reviews_url": "https://www.google.com/search?q=Beach%20Pea%20Kitchen%20%26%20Bar%20South%20Shore%20Nova%20Scotia%20reviews"
+      }
+    },
+    {
+      "date": "2026-08-13",
+      "weather": {
+        "summary": "Overcast / Light drizzle",
+        "tmax": 24.7,
+        "tmin": 16.7,
+        "precip_mm": 0.5,
+        "chance_pct": null,
+        "historical": true
+      },
+      "morning": {
+        "name": "Lunenburg Arms Hotel & Spa",
+        "type": "Attraction",
+        "region": "South Shore",
+        "latitude": 44.376911,
+        "longitude": -64.310587,
+        "distance_km": 0,
+        "maps_url": "https://www.google.com/maps/search/?api=1&query=44.376911,-64.310587",
+        "reviews_url": "https://www.google.com/search?q=Lunenburg%20Arms%20Hotel%20%26%20Spa%20South%20Shore%20Nova%20Scotia%20reviews"
+      },
+      "afternoon": {
+        "name": "Old Town Lunenburg UNESCO World Heritage Site",
+        "type": "Attraction",
+        "region": "South Shore",
+        "latitude": 44.375772,
+        "longitude": -64.310017,
+        "distance_km": 0.1,
+        "maps_url": "https://www.google.com/maps/search/?api=1&query=44.375772,-64.310017",
+        "reviews_url": "https://www.google.com/search?q=Old%20Town%20Lunenburg%20UNESCO%20World%20Heritage%20Site%20South%20Shore%20Nova%20Scotia%20reviews"
+      },
+      "dinner": {
+        "name": "Grand Banker Seafood Bar & Grill",
+        "type": "Eat & Drink",
+        "region": "South Shore",
+        "latitude": 44.376476,
+        "longitude": -64.311332,
+        "distance_km": 0.1,
+        "maps_url": "https://www.google.com/maps/search/?api=1&query=44.376476,-64.311332",
+        "reviews_url": "https://www.google.com/search?q=Grand%20Banker%20Seafood%20Bar%20%26%20Grill%20South%20Shore%20Nova%20Scotia%20reviews"
+      }
+    },
+    {
+      "date": "2026-08-14",
+      "weather": {
+        "summary": "Rain / Rain",
+        "tmax": 23.7,
+        "tmin": 16.4,
+        "precip_mm": 5.1,
+        "chance_pct": null,
+        "historical": true
+      },
+      "morning": {
+        "name": "Bluenose II",
+        "type": "Attraction",
+        "region": "South Shore",
+        "latitude": 44.37615,
+        "longitude": -64.31163,
+        "distance_km": 0.1,
+        "maps_url": "https://www.google.com/maps/search/?api=1&query=44.37615,-64.31163",
+        "reviews_url": "https://www.google.com/search?q=Bluenose%20II%20South%20Shore%20Nova%20Scotia%20reviews"
+      },
+      "afternoon": {
+        "name": "Lunenburg Walking Tours",
+        "type": "Outdoor Activities and Tours",
+        "region": "South Shore",
+        "latitude": 44.375958,
+        "longitude": -64.311075,
+        "distance_km": 0.1,
+        "maps_url": "https://www.google.com/maps/search/?api=1&query=44.375958,-64.311075",
+        "reviews_url": "https://www.google.com/search?q=Lunenburg%20Walking%20Tours%20South%20Shore%20Nova%20Scotia%20reviews"
+      },
+      "dinner": {
+        "name": "Lincoln Street Food",
+        "type": "Eat & Drink",
+        "region": "South Shore",
+        "latitude": 44.377343,
+        "longitude": -64.311503,
+        "distance_km": 0.1,
+        "maps_url": "https://www.google.com/maps/search/?api=1&query=44.377343,-64.311503",
+        "reviews_url": "https://www.google.com/search?q=Lincoln%20Street%20Food%20South%20Shore%20Nova%20Scotia%20reviews"
+      }
+    },
+    {
+      "date": "2026-08-15",
+      "weather": {
+        "summary": "Rain / Overcast",
+        "tmax": 23.5,
+        "tmin": 15.9,
+        "precip_mm": 2.5,
+        "chance_pct": null,
+        "historical": true
+      },
+      "morning": {
+        "name": "Fisheries Museum of the Atlantic",
+        "type": "Attraction",
+        "region": "South Shore",
+        "latitude": 44.37618,
+        "longitude": -64.31165,
+        "distance_km": 0.1,
+        "maps_url": "https://www.google.com/maps/search/?api=1&query=44.37618,-64.31165",
+        "reviews_url": "https://www.google.com/search?q=Fisheries%20Museum%20of%20the%20Atlantic%20South%20Shore%20Nova%20Scotia%20reviews"
+      },
+      "afternoon": {
+        "name": "Knaut-Rhuland House Museum",
+        "type": "Attraction",
+        "region": "South Shore",
+        "latitude": 44.37685,
+        "longitude": -64.30907,
+        "distance_km": 0.1,
+        "maps_url": "https://www.google.com/maps/search/?api=1&query=44.37685,-64.30907",
+        "reviews_url": "https://www.google.com/search?q=Knaut-Rhuland%20House%20Museum%20South%20Shore%20Nova%20Scotia%20reviews"
+      },
+      "dinner": {
+        "name": "Old Fish Factory Restaurant & Ice House Bar",
+        "type": "Eat & Drink",
+        "region": "South Shore",
+        "latitude": 44.376134,
+        "longitude": -64.311958,
+        "distance_km": 0.1,
+        "maps_url": "https://www.google.com/maps/search/?api=1&query=44.376134,-64.311958",
+        "reviews_url": "https://www.google.com/search?q=Old%20Fish%20Factory%20Restaurant%20%26%20Ice%20House%20Bar%20South%20Shore%20Nova%20Scotia%20reviews"
+      }
+    }
+  ],
+  "attractions": [
+    {
+      "name": "Lunenburg Academy National Historic Site",
+      "type": "Attraction",
+      "region": "South Shore",
+      "latitude": 44.380108,
+      "longitude": -64.315918,
+      "distance_km": 0.6,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.380108,-64.315918",
+      "reviews_url": "https://www.google.com/search?q=Lunenburg%20Academy%20National%20Historic%20Site%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Lunenburg Academy of Music Performance",
+      "type": "Attraction",
+      "region": "South Shore",
+      "latitude": 44.380105,
+      "longitude": -64.31373,
+      "distance_km": 0.4,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.380105,-64.31373",
+      "reviews_url": "https://www.google.com/search?q=Lunenburg%20Academy%20of%20Music%20Performance%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Lunenburg Arms Hotel & Spa",
+      "type": "Attraction",
+      "region": "South Shore",
+      "latitude": 44.376911,
+      "longitude": -64.310587,
+      "distance_km": 0,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.376911,-64.310587",
+      "reviews_url": "https://www.google.com/search?q=Lunenburg%20Arms%20Hotel%20%26%20Spa%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Old Town Lunenburg UNESCO World Heritage Site",
+      "type": "Attraction",
+      "region": "South Shore",
+      "latitude": 44.375772,
+      "longitude": -64.310017,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.375772,-64.310017",
+      "reviews_url": "https://www.google.com/search?q=Old%20Town%20Lunenburg%20UNESCO%20World%20Heritage%20Site%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Bluenose II",
+      "type": "Attraction",
+      "region": "South Shore",
+      "latitude": 44.37615,
+      "longitude": -64.31163,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.37615,-64.31163",
+      "reviews_url": "https://www.google.com/search?q=Bluenose%20II%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Cranston Gallery",
+      "type": "Attraction",
+      "region": "South Shore",
+      "latitude": 44.377375,
+      "longitude": -64.310116,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.377375,-64.310116",
+      "reviews_url": "https://www.google.com/search?q=Cranston%20Gallery%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Fisheries Museum of the Atlantic",
+      "type": "Attraction",
+      "region": "South Shore",
+      "latitude": 44.37618,
+      "longitude": -64.31165,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.37618,-64.31165",
+      "reviews_url": "https://www.google.com/search?q=Fisheries%20Museum%20of%20the%20Atlantic%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Knaut-Rhuland House Museum",
+      "type": "Attraction",
+      "region": "South Shore",
+      "latitude": 44.37685,
+      "longitude": -64.30907,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.37685,-64.30907",
+      "reviews_url": "https://www.google.com/search?q=Knaut-Rhuland%20House%20Museum%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "SEEK gifts & home decor",
+      "type": "Attraction",
+      "region": "South Shore",
+      "latitude": 44.37678980532727,
+      "longitude": -64.3122525,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.37678980532727,-64.3122525",
+      "reviews_url": "https://www.google.com/search?q=SEEK%20gifts%20%26%20home%20decor%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Gallery on Lincoln",
+      "type": "Attraction",
+      "region": "South Shore",
+      "latitude": 44.37784950431835,
+      "longitude": -64.31256122,
+      "distance_km": 0.2,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.37784950431835,-64.31256122",
+      "reviews_url": "https://www.google.com/search?q=Gallery%20on%20Lincoln%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Laurie Swim Gallery",
+      "type": "Attraction",
+      "region": "South Shore",
+      "latitude": 44.37767,
+      "longitude": -64.312362,
+      "distance_km": 0.2,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.37767,-64.312362",
+      "reviews_url": "https://www.google.com/search?q=Laurie%20Swim%20Gallery%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Peer Gallery",
+      "type": "Attraction",
+      "region": "South Shore",
+      "latitude": 44.377601,
+      "longitude": -64.312543,
+      "distance_km": 0.2,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.377601,-64.312543",
+      "reviews_url": "https://www.google.com/search?q=Peer%20Gallery%20South%20Shore%20Nova%20Scotia%20reviews"
+    }
+  ],
+  "activities": [
+    {
+      "name": "Bluenose II",
+      "type": "Outdoor Activities and Tours",
+      "region": "South Shore",
+      "latitude": 44.37615,
+      "longitude": -64.31163,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.37615,-64.31163",
+      "reviews_url": "https://www.google.com/search?q=Bluenose%20II%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Lunenburg Heritage Fishing Tours",
+      "type": "Outdoor Activities and Tours",
+      "region": "South Shore",
+      "latitude": 44.37598,
+      "longitude": -64.30923,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.37598,-64.30923",
+      "reviews_url": "https://www.google.com/search?q=Lunenburg%20Heritage%20Fishing%20Tours%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Lunenburg Walking Tours",
+      "type": "Outdoor Activities and Tours",
+      "region": "South Shore",
+      "latitude": 44.375958,
+      "longitude": -64.311075,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.375958,-64.311075",
+      "reviews_url": "https://www.google.com/search?q=Lunenburg%20Walking%20Tours%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Sail Lunenburg Star Charters",
+      "type": "Outdoor Activities and Tours",
+      "region": "South Shore",
+      "latitude": 44.37598,
+      "longitude": -64.30923,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.37598,-64.30923",
+      "reviews_url": "https://www.google.com/search?q=Sail%20Lunenburg%20Star%20Charters%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Spartan Ocean Racing & Training",
+      "type": "Outdoor Activities and Tours",
+      "region": "South Shore",
+      "latitude": 44.377917,
+      "longitude": -64.310798,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.377917,-64.310798",
+      "reviews_url": "https://www.google.com/search?q=Spartan%20Ocean%20Racing%20%26%20Training%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Trot in Time Carriage Tours",
+      "type": "Outdoor Activities and Tours",
+      "region": "South Shore",
+      "latitude": 44.376227,
+      "longitude": -64.31181,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.376227,-64.31181",
+      "reviews_url": "https://www.google.com/search?q=Trot%20in%20Time%20Carriage%20Tours%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Lunenburg Bike Shop",
+      "type": "Outdoor Activities and Tours",
+      "region": "South Shore",
+      "latitude": 44.37645934215436,
+      "longitude": -64.30769347,
+      "distance_km": 0.2,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.37645934215436,-64.30769347",
+      "reviews_url": "https://www.google.com/search?q=Lunenburg%20Bike%20Shop%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Lunenburg Ocean Adventures",
+      "type": "Outdoor Activities and Tours",
+      "region": "South Shore",
+      "latitude": 44.3755,
+      "longitude": -64.30983,
+      "distance_km": 0.2,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.3755,-64.30983",
+      "reviews_url": "https://www.google.com/search?q=Lunenburg%20Ocean%20Adventures%20South%20Shore%20Nova%20Scotia%20reviews"
+    }
+  ],
+  "restaurants": [
+    {
+      "name": "Beach Pea Kitchen & Bar",
+      "type": "Eat & Drink",
+      "region": "South Shore",
+      "latitude": 44.376268,
+      "longitude": -64.30927,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.376268,-64.30927",
+      "reviews_url": "https://www.google.com/search?q=Beach%20Pea%20Kitchen%20%26%20Bar%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Grand Banker Seafood Bar & Grill",
+      "type": "Eat & Drink",
+      "region": "South Shore",
+      "latitude": 44.376476,
+      "longitude": -64.311332,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.376476,-64.311332",
+      "reviews_url": "https://www.google.com/search?q=Grand%20Banker%20Seafood%20Bar%20%26%20Grill%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Lincoln Street Food",
+      "type": "Eat & Drink",
+      "region": "South Shore",
+      "latitude": 44.377343,
+      "longitude": -64.311503,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.377343,-64.311503",
+      "reviews_url": "https://www.google.com/search?q=Lincoln%20Street%20Food%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Old Fish Factory Restaurant & Ice House Bar",
+      "type": "Eat & Drink",
+      "region": "South Shore",
+      "latitude": 44.376134,
+      "longitude": -64.311958,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.376134,-64.311958",
+      "reviews_url": "https://www.google.com/search?q=Old%20Fish%20Factory%20Restaurant%20%26%20Ice%20House%20Bar%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Salt Shaker Deli",
+      "type": "Eat & Drink",
+      "region": "South Shore",
+      "latitude": 44.37622,
+      "longitude": -64.30944,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.37622,-64.30944",
+      "reviews_url": "https://www.google.com/search?q=Salt%20Shaker%20Deli%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Shipwright Brewing Company",
+      "type": "Eat & Drink",
+      "region": "South Shore",
+      "latitude": 44.376503,
+      "longitude": -64.31127,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.376503,-64.31127",
+      "reviews_url": "https://www.google.com/search?q=Shipwright%20Brewing%20Company%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "The South Shore Fish Shack",
+      "type": "Eat & Drink",
+      "region": "South Shore",
+      "latitude": 44.376352,
+      "longitude": -64.310145,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.376352,-64.310145",
+      "reviews_url": "https://www.google.com/search?q=The%20South%20Shore%20Fish%20Shack%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Ironworks Distillery",
+      "type": "Eat & Drink",
+      "region": "South Shore",
+      "latitude": 44.37604,
+      "longitude": -64.30584,
+      "distance_km": 0.4,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.37604,-64.30584",
+      "reviews_url": "https://www.google.com/search?q=Ironworks%20Distillery%20South%20Shore%20Nova%20Scotia%20reviews"
+    }
+  ],
+  "hotels": [
+    {
+      "name": "Lunenburg Arms Hotel & Spa",
+      "type": "Accommodation",
+      "region": "South Shore",
+      "latitude": 44.376911,
+      "longitude": -64.310587,
+      "distance_km": 0,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.376911,-64.310587",
+      "reviews_url": "https://www.google.com/search?q=Lunenburg%20Arms%20Hotel%20%26%20Spa%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Brigantine Inn",
+      "type": "Accommodation",
+      "region": "South Shore",
+      "latitude": 44.37646,
+      "longitude": -64.31139,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.37646,-64.31139",
+      "reviews_url": "https://www.google.com/search?q=Brigantine%20Inn%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Dockside Inn",
+      "type": "Accommodation",
+      "region": "South Shore",
+      "latitude": 44.3765,
+      "longitude": -64.31112,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.3765,-64.31112",
+      "reviews_url": "https://www.google.com/search?q=Dockside%20Inn%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Ivy House Inn",
+      "type": "Accommodation",
+      "region": "South Shore",
+      "latitude": 44.377726,
+      "longitude": -64.310216,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.377726,-64.310216",
+      "reviews_url": "https://www.google.com/search?q=Ivy%20House%20Inn%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Lunenburg Harbourfront Hideaway",
+      "type": "Accommodation",
+      "region": "South Shore",
+      "latitude": 44.376363,
+      "longitude": -64.31005,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.376363,-64.31005",
+      "reviews_url": "https://www.google.com/search?q=Lunenburg%20Harbourfront%20Hideaway%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Rum Runner Inn",
+      "type": "Accommodation",
+      "region": "South Shore",
+      "latitude": 44.376581,
+      "longitude": -64.311716,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.376581,-64.311716",
+      "reviews_url": "https://www.google.com/search?q=Rum%20Runner%20Inn%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Sail Inn",
+      "type": "Accommodation",
+      "region": "South Shore",
+      "latitude": 44.376435,
+      "longitude": -64.310418,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.376435,-64.310418",
+      "reviews_url": "https://www.google.com/search?q=Sail%20Inn%20South%20Shore%20Nova%20Scotia%20reviews"
+    },
+    {
+      "name": "Salt Shaker Deli & Inn",
+      "type": "Accommodation",
+      "region": "South Shore",
+      "latitude": 44.376319,
+      "longitude": -64.309371,
+      "distance_km": 0.1,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=44.376319,-64.309371",
+      "reviews_url": "https://www.google.com/search?q=Salt%20Shaker%20Deli%20%26%20Inn%20South%20Shore%20Nova%20Scotia%20reviews"
+    }
+  ],
+  "season": {
+    "peak_months": [
+      "August",
+      "July",
+      "September"
+    ],
+    "shoulder_months": [
+      "June",
+      "October",
+      "May"
+    ],
+    "trip_month": "August",
+    "trip_month_rank": 1
+  }
+}
