@@ -72,10 +72,26 @@ function init() {
   // Data loads (parallel)
   showSkeletons();
   loadStatus();
+  loadDataFreshness();
   loadFilters();
   loadDirectory();
   loadRegions();
   loadSeasonChart();
+}
+
+async function loadDataFreshness() {
+  try {
+    const s = await getJson('/api/data-status');
+    const el = $('dataFreshness');
+    if (!el) return;
+    if (s.updatedAt) {
+      const when = new Date(s.updatedAt).toLocaleDateString('en-CA', { month: 'short', day: 'numeric', year: 'numeric' });
+      const rows = s.datasets.reduce((sum, d) => sum + (d.count || 0), 0);
+      el.textContent = ` · 🔄 Open data refreshed daily — last updated ${when} (${rows.toLocaleString()} records)`;
+    } else {
+      el.textContent = ' · 🔄 Open data refreshes daily';
+    }
+  } catch { /* footer note is optional */ }
 }
 
 /* ───────────── reveal-on-scroll ───────────── */

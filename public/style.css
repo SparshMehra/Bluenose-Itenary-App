@@ -759,6 +759,7 @@ h2.light { color: #fff; }
   text-align: center;
   color: #5d6e7e;
 }
+.data-fresh { color: var(--seaglass); }
 
 /* ════════════════ CHAT WIDGET ════════════════ */
 .chat-fab {

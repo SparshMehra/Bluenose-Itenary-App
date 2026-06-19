@@ -7,6 +7,7 @@ import { searchDestinations, listRegions, listTypes, getSummary, getVisitationBy
 import { buildItinerary, getItinerary } from './src/itinerary.js';
 import { renderItineraryPage } from './src/itineraryPage.js';
 import { securityHeaders, rateLimit, cleanStr, cleanDate } from './src/security.js';
+import { startDailyPipeline, getDataStatus } from './src/pipeline.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -27,6 +28,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/api/status', (_req, res) => {
   res.json({ ai_enabled: hasApiKey() });
+});
+
+// When was the open-data snapshot last refreshed by the daily pipeline?
+app.get('/api/data-status', async (_req, res) => {
+  try {
+    const manifest = await getDataStatus();
+    if (!manifest) return res.json({ updatedAt: null, datasets: [] });
+    res.json({
+      updatedAt: manifest.updatedAt,
+      ok: manifest.ok,
+      datasets: manifest.datasets.map((d) => ({ id: d.id, name: d.name, ok: d.ok, count: d.count })),
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 app.get('/api/destinations', async (req, res) => {
@@ -159,4 +175,7 @@ app.listen(PORT, () => {
   console.log(hasApiKey()
     ? 'AI agent: ENABLED (Claude)'
     : 'AI agent: demo mode (set ANTHROPIC_API_KEY in .env for full AI chat)');
+
+  // Start the daily data pipeline: refresh on boot if stale, then daily at 03:00.
+  startDailyPipeline().catch((e) => console.error('Failed to start data pipeline:', e.message));
 });

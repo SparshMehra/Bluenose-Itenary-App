@@ -45,7 +45,11 @@ public/            # the website (vanilla HTML/CSS/JS):
                    #   visitation chart, trip planner form, and a floating
                    #   AI chat widget available on every section
 server.js          # Express server + REST endpoints
-src/nsData.js      # Socrata (Open Data NS) queries + 1h cache
+src/datasets.js    # Dataset registry + snapshot/fetch IO primitives
+src/pipeline.js    # Daily data pipeline (snapshots all datasets, scheduler)
+src/nsData.js      # Data layer — serves from daily snapshots (live fallback)
+scripts/refresh.js # Standalone refresh runner (npm run refresh-data)
+data/cache/        # Daily dataset snapshots + manifest.json (generated)
 src/weather.js     # Open-Meteo forecast / historical averages
 src/agent.js       # Claude agent (model: claude-opus-4-8) with 5 tools:
                    #   search_destinations, get_weather_outlook,
@@ -72,3 +76,36 @@ The agent uses a manual tool-use loop (`stop_reason === "tool_use"`), adaptive t
 | `GET /api/status` | Whether AI mode is enabled |
 | `POST /api/itinerary` | `{destination,start_date,end_date}` → builds + saves an itinerary |
 | `GET /itinerary/:id` | Full shareable itinerary page (HTML) |
+| `GET /api/data-status` | When the open data was last refreshed + per-dataset row counts |
+
+## Live data pipeline (daily refresh)
+
+All four Open Data Nova Scotia datasets are snapshotted to `data/cache/` and
+**refreshed automatically every day**, so the app serves fast local copies and
+keeps working even if the open-data portal is briefly down.
+
+- **On server start**, it refreshes if the snapshot is older than ~23h, then
+  schedules a refresh **daily at 03:00 local time**. After each refresh the
+  in-memory cache is cleared, so new data appears **without a restart**.
+- The footer shows the last-updated date and total record count.
+- Requests fall back to a live Socrata fetch if a snapshot is ever missing.
+
+**Manual refresh** (anytime):
+```powershell
+npm run refresh-data
+```
+
+**If you don't keep the server running 24/7**, schedule the refresh at the OS
+level instead (it runs in seconds and exits):
+
+- **Windows (Task Scheduler)** — create a Basic Task → Daily → *Start a program*:
+  - Program: `node`
+  - Arguments: `scripts/refresh.js`
+  - Start in: the project folder (`C:\...\APP T-2`)
+- **macOS/Linux (cron)** — `crontab -e`, then:
+  ```
+  0 3 * * * cd /path/to/APP\ T-2 && /usr/bin/node scripts/refresh.js >> refresh.log 2>&1
+  ```
+
+> Snapshots live in `data/` which is git-ignored — they're regenerated, never committed.
+> Set an optional `SOCRATA_APP_TOKEN` in `.env` for higher refresh rate limits.

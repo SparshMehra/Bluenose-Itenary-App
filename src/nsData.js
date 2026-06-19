@@ -1,24 +1,45 @@
-// Data access layer for Open Data Nova Scotia (Socrata / SODA API)
+// Data access layer for Open Data Nova Scotia.
+// Serves rows from the daily on-disk snapshots written by the pipeline
+// (src/pipeline.js); falls back to a live fetch if a snapshot is missing.
 // Datasets used:
 //   2h2s-6bg4  Tourism Nova Scotia Listed Operators (attractions with GPS coords)
 //   n783-4gmh  Tourism Nova Scotia Visitation (monthly visitor counts)
 //   is4a-t3qd  Visitor Exit Survey - Communities visited (popularity %)
 //   xqm5-iybw  Provincial Visitor Information Centre visitation by month
 
-const BASE = 'https://data.novascotia.ca/resource';
+import { fetchAllRows, readSnapshot, writeSnapshot } from './datasets.js';
 
-// Simple in-memory cache so we don't hammer the open data portal
-const cache = new Map();
-const TTL_MS = 60 * 60 * 1000; // 1 hour
+// In-memory copy of each dataset's rows. Cleared by the pipeline (via
+// clearDataCache) right after it writes fresh snapshots, so the running app
+// picks up new data without a restart.
+const mem = new Map(); // id -> { rows, at }
+const MEM_TTL = 24 * 60 * 60 * 1000;
 
-async function fetchJson(url) {
-  const hit = cache.get(url);
-  if (hit && Date.now() - hit.at < TTL_MS) return hit.data;
-  const res = await fetch(url, { headers: { Accept: 'application/json' } });
-  if (!res.ok) throw new Error(`Open Data NS request failed (${res.status}): ${url}`);
-  const data = await res.json();
-  cache.set(url, { at: Date.now(), data });
-  return data;
+/** Called by the pipeline after a refresh so the app reloads fresh snapshots. */
+export function clearDataCache() {
+  mem.clear();
+}
+
+/**
+ * Load all rows for a dataset: memory → disk snapshot → live fetch.
+ * On a live fetch (snapshot absent), the result is persisted as a snapshot so
+ * the very first run still warms the cache.
+ */
+async function loadDataset(id) {
+  const hit = mem.get(id);
+  if (hit && Date.now() - hit.at < MEM_TTL) return hit.rows;
+
+  const snap = await readSnapshot(id);
+  if (snap) {
+    mem.set(id, { rows: snap.rows, at: Date.now() });
+    return snap.rows;
+  }
+
+  // No snapshot yet (e.g. first ever boot before the pipeline finishes): go live.
+  const rows = await fetchAllRows(id);
+  mem.set(id, { rows, at: Date.now() });
+  writeSnapshot(id, rows).catch(() => {}); // best-effort warm
+  return rows;
 }
 
 // Normalize for fuzzy matching: lowercase, strip accents and punctuation
@@ -33,36 +54,74 @@ function norm(s) {
     .trim();
 }
 
+// Levenshtein edit distance — used to tolerate small typos ("lunenberg").
+function lev(a, b) {
+  const m = a.length, n = b.length;
+  if (!m) return n;
+  if (!n) return m;
+  let prev = Array.from({ length: n + 1 }, (_, j) => j);
+  for (let i = 1; i <= m; i++) {
+    const cur = [i];
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
+    }
+    prev = cur;
+  }
+  return prev[n];
+}
+
+const shape = (row) => ({
+  name: row.name,
+  type: row.type,
+  region: row.region,
+  latitude: Number(row.latitude),
+  longitude: Number(row.longitude),
+});
+
 /**
  * Search tourism operators/attractions by name, region or type.
- * Returns up to `limit` results with coordinates.
+ * Returns up to `limit` results with coordinates. Falls back to a typo-tolerant
+ * fuzzy match when an exact substring search finds nothing.
  */
 export async function searchDestinations({ query = '', region = '', type = '', limit = 15 } = {}) {
-  const params = new URLSearchParams({ $limit: '5000' });
-  const url = `${BASE}/2h2s-6bg4.json?${params}`;
-  const rows = await fetchJson(url);
+  const rows = await loadDataset('2h2s-6bg4');
 
   const q = norm(query);
   const r = norm(region);
   const t = norm(type);
 
+  const passesFilters = (row) => {
+    if (r && !norm(row.region).includes(r)) return false;
+    if (t && !norm(row.type).includes(t)) return false;
+    return row.latitude && row.longitude;
+  };
+
   const results = rows.filter((row) => {
     const name = norm(row.name);
-    const reg = norm(row.region);
-    const typ = norm(row.type);
-    if (q && !(name.includes(q) || reg.includes(q))) return false;
-    if (r && !reg.includes(r)) return false;
-    if (t && !typ.includes(t)) return false;
-    return row.latitude && row.longitude;
+    if (q && !(name.includes(q) || norm(row.region).includes(q))) return false;
+    return passesFilters(row);
   });
 
-  return results.slice(0, limit).map((row) => ({
-    name: row.name,
-    type: row.type,
-    region: row.region,
-    latitude: Number(row.latitude),
-    longitude: Number(row.longitude),
-  }));
+  // Typo-tolerant fallback: compare the query against each name word.
+  if (q && results.length === 0 && q.length >= 4) {
+    const tol = q.length >= 7 ? 3 : 2; // allow more edits on longer words
+    const scored = [];
+    for (const row of rows) {
+      if (!passesFilters(row)) continue;
+      let best = Infinity;
+      for (const word of norm(row.name).split(' ')) {
+        if (Math.abs(word.length - q.length) > tol) continue;
+        const d = lev(q, word);
+        if (d < best) best = d;
+      }
+      if (best <= tol) scored.push({ row, d: best });
+    }
+    scored.sort((a, b) => a.d - b.d);
+    return scored.slice(0, limit).map(({ row }) => shape(row));
+  }
+
+  return results.slice(0, limit).map(shape);
 }
 
 // Some operators belong to several regions, stored comma-separated
@@ -73,7 +132,7 @@ function splitRegions(value) {
 
 /** Distinct tourism regions in the operators dataset (for the UI dropdown). */
 export async function listRegions() {
-  const rows = await fetchJson(`${BASE}/2h2s-6bg4.json?$select=distinct region&$limit=100`);
+  const rows = await loadDataset('2h2s-6bg4');
   const set = new Set();
   for (const r of rows) for (const part of splitRegions(r.region)) set.add(part);
   return [...set].sort();
@@ -81,13 +140,15 @@ export async function listRegions() {
 
 /** Distinct operator types (Attraction, Accommodation, ...). */
 export async function listTypes() {
-  const rows = await fetchJson(`${BASE}/2h2s-6bg4.json?$select=distinct type&$limit=100`);
-  return rows.map((r) => r.type).filter(Boolean).sort();
+  const rows = await loadDataset('2h2s-6bg4');
+  const set = new Set();
+  for (const r of rows) if (r.type) set.add(r.type);
+  return [...set].sort();
 }
 
 /** Site-wide summary: total operators + counts per region and per type. */
 export async function getSummary() {
-  const rows = await fetchJson(`${BASE}/2h2s-6bg4.json?$limit=5000`);
+  const rows = await loadDataset('2h2s-6bg4');
   const byRegion = {};
   const byType = {};
   for (const row of rows) {
@@ -107,7 +168,7 @@ export async function getSummary() {
  * peak season vs quiet season ("best dates").
  */
 export async function getVisitationByMonth() {
-  const rows = await fetchJson(`${BASE}/n783-4gmh.json?$limit=50000`);
+  const rows = await loadDataset('n783-4gmh');
 
   const byMonthYear = new Map(); // '2024-07' -> total
   for (const row of rows) {
@@ -145,7 +206,7 @@ export async function getVisitationByMonth() {
  * (exit survey: % of visitors who visited each community, latest survey year).
  */
 export async function getCommunityPopularity({ community = '', region = '', limit = 20 } = {}) {
-  const rows = await fetchJson(`${BASE}/is4a-t3qd.json?$limit=10000`);
+  const rows = await loadDataset('is4a-t3qd');
   const latestYear = rows.reduce((max, r) => Math.max(max, Number(r.year) || 0), 0);
 
   let results = rows

@@ -71,6 +71,33 @@ export function parseDates(text) {
     return { start_date: s, end_date: s };
   }
 
+  // DAY Month .. DAY [Month]  e.g. "20th June to 22nd June", "20 June - 25 July"
+  m = t.match(new RegExp(
+    `\\b(\\d{1,2})(?:st|nd|rd|th)?\\s+(?:of\\s+)?(${MONTH_RE})\\.?` +
+    `\\s*(?:-|–|—|to|until|through|and)\\s*(\\d{1,2})(?:st|nd|rd|th)?\\s+(?:of\\s+)?(${MONTH_RE})?`
+  ));
+  if (m) {
+    const d1 = Number(m[1]);
+    const m1 = MONTHS[m[2]];
+    const d2 = Number(m[3]);
+    const m2 = m[4] != null ? MONTHS[m[4]] : m1;
+    const y1 = resolveYear(m1, d1);
+    const y2 = m2 < m1 ? y1 + 1 : y1;
+    return { start_date: iso(y1, m1, d1), end_date: iso(y2, m2, d2) };
+  }
+
+  // DAY - DAY Month  e.g. "20-22 June", "20 to 22 june"
+  m = t.match(new RegExp(
+    `\\b(\\d{1,2})(?:st|nd|rd|th)?\\s*(?:-|–|—|to|until|through|and)\\s*(\\d{1,2})(?:st|nd|rd|th)?\\s+(?:of\\s+)?(${MONTH_RE})\\b`
+  ));
+  if (m) {
+    const d1 = Number(m[1]);
+    const d2 = Number(m[2]);
+    const mi = MONTHS[m[3]];
+    const y = resolveYear(mi, Math.min(d1, d2));
+    return { start_date: iso(y, mi, d1), end_date: iso(y, mi, d2) };
+  }
+
   // DAY Month  e.g. "20 June", "20th of August"
   m = t.match(new RegExp(`\\b(\\d{1,2})(?:st|nd|rd|th)?\\s+(?:of\\s+)?(${MONTH_RE})\\b`));
   if (m) {
@@ -91,10 +118,20 @@ export function extractDestinationPhrase(text) {
   // Remove date expressions so they don't leak into the destination.
   t = t.replace(/\b\d{4}-\d{2}-\d{2}\b/g, ' ');
   t = t.replace(/\b(this|next)\s+weekend\b/gi, ' ');
+  // Month-first ranges/singles: "June 20", "June 20-25", "Aug 10 to 17"
   t = t.replace(new RegExp(
     `\\b(?:on|from|between|by|around|during|in|the)?\\s*${MONTH_RE}\\.?\\s+\\d{1,2}(?:st|nd|rd|th)?` +
     `(?:\\s*(?:-|–|—|to|until|through|and)\\s*(?:${MONTH_RE}\\.?\\s+)?\\d{1,2}(?:st|nd|rd|th)?)?`, 'gi'), ' ');
+  // Day-first ranges: "20th June to 22nd June", "20 June - 25 July", "20-22 June"
+  t = t.replace(new RegExp(
+    `\\b\\d{1,2}(?:st|nd|rd|th)?\\s+(?:of\\s+)?${MONTH_RE}\\.?` +
+    `\\s*(?:-|–|—|to|until|through|and)\\s*\\d{1,2}(?:st|nd|rd|th)?\\s+(?:of\\s+)?${MONTH_RE}?`, 'gi'), ' ');
+  t = t.replace(new RegExp(
+    `\\b\\d{1,2}(?:st|nd|rd|th)?\\s*(?:-|–|—|to|until|through|and)\\s*\\d{1,2}(?:st|nd|rd|th)?\\s+(?:of\\s+)?${MONTH_RE}\\b`, 'gi'), ' ');
+  // Day-first single: "20th June", "20 of August"
   t = t.replace(new RegExp(`\\b\\d{1,2}(?:st|nd|rd|th)?\\s+(?:of\\s+)?${MONTH_RE}\\b`, 'gi'), ' ');
+  // Any leftover bare day tokens left by a stripped range, e.g. "from 20th to"
+  t = t.replace(/\b\d{1,2}(?:st|nd|rd|th)\b/gi, ' ');
 
   // Prefer text after an explicit travel trigger; else after a locator word.
   let phrase = null;
@@ -106,10 +143,10 @@ export function extractDestinationPhrase(text) {
   }
   if (!phrase) phrase = t;
 
-  // Strip filler words and punctuation; keep place-name tokens.
+  // Strip filler words (incl. date connectors) and punctuation; keep place names.
   phrase = phrase
     .replace(/[?!.,;:"]/g, ' ')
-    .replace(/\b(please|plan|planning|my|our|a|an|the|trip|holiday|vacation|getaway|for|day|days|night|nights|week|weekend|sometime|early|late|mid|next|this|on|in|at|i|we|want|wanna|would|like|love|to|go|going|visit|visiting|see|explore|and|with|family|kids|friends|me|us|somewhere|place|spots?)\b/gi, ' ')
+    .replace(/\b(please|plan|planning|my|our|a|an|the|trip|holiday|vacation|getaway|for|day|days|night|nights|week|weekend|sometime|early|late|mid|next|this|on|in|at|from|to|until|till|through|between|by|around|during|i|we|want|wanna|would|like|love|go|going|visit|visiting|see|explore|and|with|family|kids|friends|me|us|somewhere|place|spots?)\b/gi, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 
