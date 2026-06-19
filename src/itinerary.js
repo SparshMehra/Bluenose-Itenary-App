@@ -23,11 +23,14 @@ function haversineKm(lat1, lon1, lat2, lon2) {
 }
 
 function withLinks(spot, anchor) {
+  const place = `${spot.name} ${spot.region || ''} Nova Scotia`.trim();
   return {
     ...spot,
     distance_km: anchor ? haversineKm(anchor.latitude, anchor.longitude, spot.latitude, spot.longitude) : null,
+    // Map pin at the exact coordinates.
     maps_url: `https://www.google.com/maps/search/?api=1&query=${spot.latitude},${spot.longitude}`,
-    reviews_url: `https://www.google.com/search?q=${encodeURIComponent(`${spot.name} ${spot.region} Nova Scotia reviews`)}`,
+    // Google Maps place search by name → opens the place card with star ratings & reviews.
+    reviews_url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place)}`,
   };
 }
 
