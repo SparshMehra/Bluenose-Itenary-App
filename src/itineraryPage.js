@@ -56,7 +56,7 @@ function listSection(title, sub, items, icon) {
     </section>`;
 }
 
-export function renderItineraryPage(it) {
+export function renderItineraryPage(it, opts = {}) {
   if (!it) {
     return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Itinerary not found</title><style>body{font-family:system-ui;background:#0a1626;color:#e7f0f7;display:grid;place-items:center;height:100vh;margin:0;text-align:center}a{color:#f2a83b}</style></head><body><div><h1>🧭 Itinerary not found</h1><p>This itinerary may have expired or the link is wrong.</p><p><a href="/">← Back to Nova Scotia Explorer</a></p></div></body></html>`;
   }
@@ -184,7 +184,11 @@ export function renderItineraryPage(it) {
     ${listSection('🏛️ Top <em>attractions</em>', 'Listed attractions near your destination.', it.attractions, '🏛️')}
     ${listSection('🛶 <em>Outdoor</em> activities &amp; tours', 'Things to do outside near your destination.', it.activities, '🛶')}
 
-    <p style="text-align:center"><a class="cta printbtn" href="javascript:window.print()">🖨️ Save / print this itinerary</a></p>
+    <p style="text-align:center;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="cta printbtn" id="printBtn" type="button" style="border:none;cursor:pointer">🖨️ Save / print</button>
+      ${opts.emailEnabled ? `<button class="cta printbtn" id="emailBtn" type="button" data-id="${esc(it.id)}" style="border:none;cursor:pointer">📧 Email me a copy</button>` : ''}
+    </p>
+    <p id="emailMsg" style="text-align:center;margin:4px 0 0;font-size:.9rem"></p>
   </main>
 
   <footer class="footer">
@@ -193,6 +197,8 @@ export function renderItineraryPage(it) {
     <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a>.
     Review links open a live web search — ratings are not part of the open dataset.
   </footer>
+
+  <script src="/itinerary-page.js"></script>
 </body>
 </html>`;
 }

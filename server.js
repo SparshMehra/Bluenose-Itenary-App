@@ -12,6 +12,7 @@ import {
   registerUser, authenticate, createSessionToken,
   setSessionCookie, clearSessionCookie, attachUser, requireAuth,
 } from './src/auth.js';
+import { sendItineraryEmail, isEmailEnabled } from './src/email.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -219,13 +220,30 @@ app.post('/api/itinerary', writeLimiter, async (req, res) => {
   }
 });
 
+// --- Itinerary: email a copy to the logged-in user ---
+app.post('/api/itinerary/:id/email', writeLimiter, requireAuth, async (req, res) => {
+  if (!isEmailEnabled()) {
+    return res.status(503).json({ error: 'Email isn\'t configured on this server yet.' });
+  }
+  const it = await getItinerary(req.params.id);
+  if (!it) return res.status(404).json({ error: 'Itinerary not found.' });
+  try {
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    await sendItineraryEmail(req.user.email, it, baseUrl);
+    res.json({ ok: true, emailedTo: req.user.email });
+  } catch (err) {
+    console.error('[email] manual send failed:', err.message);
+    res.status(502).json({ error: 'Could not send the email. Please try again.' });
+  }
+});
+
 // --- Itinerary: full shareable HTML page ---
 app.get('/itinerary/:id', async (req, res) => {
   const it = await getItinerary(req.params.id);
   if (!it) {
     return res.status(404).send(renderItineraryPage(null));
   }
-  res.type('html').send(renderItineraryPage(it));
+  res.type('html').send(renderItineraryPage(it, { loggedIn: !!req.user, emailEnabled: isEmailEnabled() }));
 });
 
 app.listen(PORT, () => {

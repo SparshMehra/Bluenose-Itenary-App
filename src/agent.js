@@ -233,6 +233,7 @@ export async function fallbackRecommend(meta = {}, messages = [], ownerId = null
 
   lines.push(`\n**✅ Your itinerary is planned — [Open your full itinerary →](${it.url})**`);
   lines.push(`\n_It includes the best restaurants, hotels, attractions and a day-by-day plan with map & reviews links._`);
+  if (it.emailedTo) lines.push(`\n📧 _A copy has been emailed to **${escapeName(it.emailedTo)}**._`);
   return lines.join('\n');
 }
 

@@ -57,8 +57,27 @@ src/agent.js       # Claude agent (model: claude-opus-4-8) with 5 tools:
                    #   build_itinerary
 src/itinerary.js   # Assembles + saves a full itinerary (eat/stay/see + days)
 src/itineraryPage.js # Renders the shareable /itinerary/:id HTML page
+src/auth.js        # User accounts: scrypt passwords + signed-cookie sessions
+src/email.js       # Emails itineraries via Gmail SMTP (nodemailer)
 data/itineraries/  # Saved itineraries (one JSON per trip)
+data/users.json    # User accounts (generated, git-ignored)
 ```
+
+## Email itineraries (optional)
+
+When a **logged-in** user creates a trip, the full itinerary is emailed to their
+account address automatically; the itinerary page also has an **"Email me a copy"**
+button. Email uses Gmail SMTP and is **off until configured** — the app works fine
+without it.
+
+To enable:
+1. Turn on 2-Step Verification on your Google account.
+2. Create an **App Password**: https://myaccount.google.com/apppasswords
+3. In `.env`, set `GMAIL_USER` (your address) and `GMAIL_APP_PASSWORD` (the 16-char
+   app password — **not** your login password), then restart.
+
+> Gmail SMTP is fine for personal/demo use but has low daily limits and isn't meant
+> for production volume — switch to a provider like Resend/SendGrid before scaling.
 
 The agent uses a manual tool-use loop (`stop_reason === "tool_use"`), adaptive thinking, and prompt caching on the system prompt.
 

@@ -9,6 +9,10 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { searchDestinations, getVisitationByMonth, getCommunityPopularity } from './nsData.js';
 import { getWeatherOutlook } from './weather.js';
+import { getUserById } from './auth.js';
+import { sendItineraryEmail, isEmailEnabled } from './email.js';
+
+const BASE_URL = process.env.PUBLIC_BASE_URL || `http://localhost:${process.env.PORT || 3000}`;
 
 const STORE_DIR = path.join(process.cwd(), 'data', 'itineraries');
 
@@ -142,7 +146,21 @@ export async function buildItinerary({ destination, start_date, end_date, notes 
   await fs.mkdir(STORE_DIR, { recursive: true });
   await fs.writeFile(path.join(STORE_DIR, `${itinerary.id}.json`), JSON.stringify(itinerary, null, 2));
 
-  return { ...itinerary, url: `/itinerary/${itinerary.id}` };
+  // Auto-email the itinerary to the logged-in owner (best-effort, non-fatal).
+  let emailedTo = null;
+  if (ownerId && isEmailEnabled()) {
+    const user = getUserById(ownerId);
+    if (user?.email) {
+      try {
+        await sendItineraryEmail(user.email, itinerary, BASE_URL);
+        emailedTo = user.email;
+      } catch (err) {
+        console.error('[email] failed to send itinerary:', err.message);
+      }
+    }
+  }
+
+  return { ...itinerary, url: `/itinerary/${itinerary.id}`, emailedTo };
 }
 
 export async function getItinerary(id) {
