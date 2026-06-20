@@ -72,11 +72,92 @@ function init() {
   // Data loads (parallel)
   showSkeletons();
   loadStatus();
+  loadAuth();
   loadDataFreshness();
   loadFilters();
   loadDirectory();
   loadRegions();
   loadSeasonChart();
+}
+
+/* ───────────── auth / account ───────────── */
+
+let currentUser = null;
+
+async function loadAuth() {
+  try {
+    const { user } = await getJson('/api/auth/me');
+    currentUser = user;
+    renderAuth();
+    if (user) loadMyTrips();
+  } catch { /* navbar stays as Login */ renderAuth(); }
+}
+
+function renderAuth() {
+  const el = $('navAuth');
+  if (!el) return;
+  if (!currentUser) {
+    el.innerHTML = '<a class="nav-login" href="/login">Log in</a>';
+    return;
+  }
+  const initial = (currentUser.name || currentUser.email || '?').trim().charAt(0).toUpperCase();
+  el.innerHTML = `
+    <div class="account">
+      <button class="account-btn" id="accountBtn" aria-haspopup="true">
+        <span class="account-avatar">${escapeHtml(initial)}</span>
+        ${escapeHtml(currentUser.name || 'Account')} ▾
+      </button>
+      <div class="account-menu" id="accountMenu" hidden>
+        <div class="who"><strong>${escapeHtml(currentUser.name || '')}</strong><span>${escapeHtml(currentUser.email)}</span></div>
+        <a href="#my-trips" id="menuMyTrips">🗺️ My trips</a>
+        <button type="button" id="logoutBtn">↪ Log out</button>
+      </div>`;
+  const btn = $('accountBtn');
+  const menu = $('accountMenu');
+  btn.addEventListener('click', (e) => { e.stopPropagation(); menu.hidden = !menu.hidden; });
+  document.addEventListener('click', () => { menu.hidden = true; });
+  $('logoutBtn').addEventListener('click', logout);
+}
+
+async function logout() {
+  try { await fetch('/api/auth/logout', { method: 'POST' }); } catch {}
+  currentUser = null;
+  renderAuth();
+  $('my-trips').hidden = true;
+}
+
+async function loadMyTrips() {
+  try {
+    const trips = await getJson('/api/my/itineraries');
+    const section = $('my-trips');
+    const grid = $('myTripsGrid');
+    if (!trips.length) {
+      section.hidden = false;
+      grid.innerHTML = '<p class="muted">No saved trips yet — plan one below and it\'ll appear here.</p>';
+      return;
+    }
+    section.hidden = false;
+    grid.innerHTML = '';
+    trips.forEach((t, i) => {
+      const card = document.createElement('div');
+      card.className = 'dest-card';
+      card.style.animationDelay = `${Math.min(i * 45, 360)}ms`;
+      card.style.setProperty('--accent', 'linear-gradient(90deg,#f2a83b,#e76f51)');
+      card.innerHTML = `
+        <div class="dest-icon">🧭</div>
+        <h3>${escapeHtml(t.destination)}</h3>
+        <div class="dest-tags"><span class="tag region">${escapeHtml(t.region || 'Nova Scotia')}</span></div>
+        <p class="trip-dates">${escapeHtml(t.start_date)} → ${escapeHtml(t.end_date)}</p>`;
+      const a = document.createElement('a');
+      a.className = 'card-cta';
+      a.href = t.url;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.innerHTML = 'Open itinerary <span>→</span>';
+      card.appendChild(a);
+      grid.appendChild(card);
+    });
+  } catch { /* leave hidden */ }
 }
 
 async function loadDataFreshness() {
@@ -465,6 +546,8 @@ async function sendMessage(text) {
     if (!res.ok) throw new Error(data.error || 'Request failed');
     state.conversation.push({ role: 'assistant', content: data.reply });
     addMessage('agent', data.reply, { markdown: true });
+    // If a logged-in user just got an itinerary, refresh their saved trips.
+    if (currentUser && /\/itinerary\//.test(data.reply)) loadMyTrips();
   } catch (err) {
     addMessage('agent', `Sorry — something went wrong: ${err.message}`);
   } finally {

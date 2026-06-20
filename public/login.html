@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in · Nova Scotia Explorer</title>
+  <meta name="theme-color" content="#0a1626" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Outfit:wght@300..800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="auth-body">
+  <div class="auth-wrap">
+
+    <!-- Brand / showcase side -->
+    <aside class="auth-aside">
+      <div class="auth-sky" aria-hidden="true">
+        <span class="star s1"></span><span class="star s3"></span><span class="star s5"></span>
+        <span class="star s7"></span><span class="star s8"></span>
+      </div>
+      <div class="auth-scene" aria-hidden="true">
+        <div class="beam"></div>
+        <svg class="lighthouse" viewBox="0 0 200 260"><path d="M0 260 L0 238 Q60 222 110 230 Q160 238 200 226 L200 260 Z" fill="#071120"/><g fill="#0d1f33"><path d="M86 232 L92 130 L108 130 L114 232 Z"/><rect x="90" y="118" width="20" height="14" rx="2"/><rect x="93" y="104" width="14" height="14" rx="1"/><path d="M91 104 L100 92 L109 104 Z"/></g><circle class="lamp" cx="100" cy="110" r="5"/></svg>
+      </div>
+      <a class="auth-brand" href="/">⚓ Nova&nbsp;Scotia <em>Explorer</em></a>
+      <div class="auth-aside-copy">
+        <h2>Plan smarter.<br/>Travel <em>better</em>.</h2>
+        <p>Save your itineraries, pick up where you left off, and let Bluenose tailor each trip to the weather and the season.</p>
+        <ul class="auth-perks">
+          <li>🗺️ Keep all your trip plans in one place</li>
+          <li>🍽️ Best eats &amp; stays, ranked by distance</li>
+          <li>📅 Real open-data weather &amp; seasons</li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Form side -->
+    <main class="auth-main">
+      <div class="auth-card">
+        <a class="auth-back" href="/">← Back to site</a>
+
+        <div class="auth-tabs" role="tablist">
+          <button id="tabLogin" class="auth-tab active" type="button" role="tab">Sign in</button>
+          <button id="tabRegister" class="auth-tab" type="button" role="tab">Create account</button>
+        </div>
+
+        <h1 id="authTitle">Welcome back</h1>
+        <p id="authSubtitle" class="auth-sub">Sign in to see your saved trips.</p>
+
+        <div id="authError" class="auth-error" hidden></div>
+
+        <form id="authForm" novalidate>
+          <label class="auth-field" id="nameField" hidden>
+            <span>Name</span>
+            <input id="name" type="text" autocomplete="name" placeholder="Your name" />
+          </label>
+          <label class="auth-field">
+            <span>Email</span>
+            <input id="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+          </label>
+          <label class="auth-field">
+            <span>Password</span>
+            <input id="password" type="password" autocomplete="current-password" placeholder="••••••••" required />
+            <small id="pwHint" class="auth-hint" hidden>At least 8 characters.</small>
+          </label>
+
+          <button type="submit" class="btn btn-amber btn-block" id="authSubmit">Sign in</button>
+        </form>
+
+        <p class="auth-switch">
+          <span id="switchText">New here?</span>
+          <button type="button" id="switchBtn" class="auth-link">Create an account</button>
+        </p>
+
+        <p class="auth-fine">🔒 Passwords are hashed (scrypt) and never stored in plain text.</p>
+      </div>
+    </main>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>

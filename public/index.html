@@ -30,6 +30,7 @@
       <button class="nav-cta" id="navChatBtn">
         <span class="pulse-dot"></span> Ask the AI agent
       </button>
+      <span class="nav-auth" id="navAuth"></span>
     </div>
   </nav>
 
@@ -88,6 +89,14 @@
   </section>
 
   <main>
+    <!-- ============ MY TRIPS (logged-in only) ============ -->
+    <section class="section" id="my-trips" hidden>
+      <p class="kicker reveal in">Your account</p>
+      <h2 class="reveal in">My <em>trips</em></h2>
+      <p class="section-sub reveal in">Itineraries you've saved while signed in.</p>
+      <div class="dest-grid" id="myTripsGrid"></div>
+    </section>
+
     <!-- ============ DESTINATIONS ============ -->
     <section class="section" id="destinations">
       <p class="kicker reveal">The directory</p>

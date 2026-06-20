@@ -62,7 +62,7 @@ function dateRange(start, end, cap = 14) {
   return out;
 }
 
-export async function buildItinerary({ destination, start_date, end_date, notes = '' }) {
+export async function buildItinerary({ destination, start_date, end_date, notes = '', ownerId = null }) {
   if (!destination || !start_date || !end_date) {
     throw new Error('destination, start_date and end_date are required');
   }
@@ -121,6 +121,7 @@ export async function buildItinerary({ destination, start_date, end_date, notes 
   const itinerary = {
     id: randomUUID().slice(0, 8),
     created_at: new Date().toISOString(),
+    ownerId,
     destination,
     region,
     start_date,
@@ -152,4 +153,34 @@ export async function getItinerary(id) {
   } catch {
     return null;
   }
+}
+
+/** List saved itineraries belonging to a user, newest first (lightweight fields). */
+export async function listItinerariesByOwner(ownerId) {
+  if (!ownerId) return [];
+  let files = [];
+  try {
+    files = (await fs.readdir(STORE_DIR)).filter((f) => f.endsWith('.json'));
+  } catch {
+    return [];
+  }
+  const out = [];
+  for (const f of files) {
+    try {
+      const it = JSON.parse(await fs.readFile(path.join(STORE_DIR, f), 'utf8'));
+      if (it.ownerId === ownerId) {
+        out.push({
+          id: it.id,
+          destination: it.destination,
+          region: it.region,
+          start_date: it.start_date,
+          end_date: it.end_date,
+          created_at: it.created_at,
+          url: `/itinerary/${it.id}`,
+        });
+      }
+    } catch { /* skip unreadable */ }
+  }
+  out.sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
+  return out;
 }

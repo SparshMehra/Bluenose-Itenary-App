@@ -113,7 +113,7 @@ function getClient() {
   return client;
 }
 
-async function executeTool(name, input) {
+async function executeTool(name, input, ctx = {}) {
   switch (name) {
     case 'search_destinations':
       return searchDestinations(input);
@@ -124,7 +124,7 @@ async function executeTool(name, input) {
     case 'get_top_communities':
       return getCommunityPopularity(input ?? {});
     case 'build_itinerary':
-      return buildItinerary(input);
+      return buildItinerary({ ...input, ownerId: ctx.ownerId ?? null }); // tag owner if logged in
     default:
       throw new Error(`Unknown tool: ${name}`);
   }
@@ -133,9 +133,10 @@ async function executeTool(name, input) {
 /**
  * Run one agent turn. `messages` is the prior conversation:
  * [{ role: 'user'|'assistant', content: string }, ...]
+ * `ctx.ownerId` (optional) tags any itinerary the agent builds to that user.
  * Returns the assistant's final text.
  */
-export async function chat(messages) {
+export async function chat(messages, ctx = {}) {
   const anthropic = getClient();
   const convo = messages.map((m) => ({ role: m.role, content: m.content }));
 
@@ -157,7 +158,7 @@ export async function chat(messages) {
         let result;
         let isError = false;
         try {
-          result = await executeTool(block.name, block.input);
+          result = await executeTool(block.name, block.input, ctx);
         } catch (err) {
           result = `Error: ${err.message}`;
           isError = true;
@@ -194,8 +195,9 @@ export async function chat(messages) {
  *
  * @param {object} meta      optional { destination, start_date, end_date } from the form
  * @param {Array}  messages  the chat history [{role, content}, ...]
+ * @param {string} ownerId   optional logged-in user id to tag the itinerary
  */
-export async function fallbackRecommend(meta = {}, messages = []) {
+export async function fallbackRecommend(meta = {}, messages = [], ownerId = null) {
   const { destination, start_date, end_date } = parseTripFromMessages(messages, meta);
 
   // Ask only for what's still missing — like a real agent would.
@@ -211,7 +213,7 @@ export async function fallbackRecommend(meta = {}, messages = []) {
 
   let it;
   try {
-    it = await buildItinerary({ destination, start_date, end_date });
+    it = await buildItinerary({ destination, start_date, end_date, ownerId });
   } catch (err) {
     return `I couldn't find **${escapeName(destination)}** in the Nova Scotia tourism data. Try a nearby community or a region name like **Cape Breton**, **Halifax** or **Lunenburg**. _(${err.message})_`;
   }
